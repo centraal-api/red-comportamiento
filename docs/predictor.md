@@ -282,7 +282,7 @@ Se usan los parametros del Ejemplo \# 1, para mostrar el contenido esperado en f
     "merchant_ciiu": 8888,
     "merchant_isic_division_id": 66,
     "card_country": "CO",
-    "card_bin": "434082",
+    "card_bin": "123456",
     "transaction_card_installments": 1,
     "transaction_payer_phone": "",
     "transaction_payer_mobile": "45678987456547898745",
