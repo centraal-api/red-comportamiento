@@ -3,6 +3,9 @@
 ## Tabla de Contenidos
 
 1. [Descripción General](#descripcion_general)
+2. [Rest Api](#rest_api)
+    1. [Autenticación](#auth)
+    2. [Consulta de riesgo de fraude](consulta_riesgo_fraude)
 
 ## Descripción General <a name="descripcion_general"></a>
 
@@ -10,9 +13,9 @@ Scudo Red de Comportamiento es una solución para la detección de fraudes que s
 
 El proposito de esta solucion es el de la construccion de un sistema de evaluacion del riesgo basado en metodos de aprendizaje de maquina que estimé un puntaje de sospecha de fraude e índique cuales son los grupos de caracteristicas que llevaron a estimar tal puntaje
 
-## REST API
+## REST API <a name="rest_api"></a>
 
-### Autenticación
+### Autenticación <a name="auth"></a>
 
 Debes autentícarte antes para realizar invocaciones del servicio de predicción.
 Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta de servicio proporcionada 'json_cred.json' para intercambiarlo por un token de ID firmado por Google. La cuenta de servicio es la misma que se esta utilizando para realizar el cargue de los deltas desde on-premise - Google Cloud
@@ -93,7 +96,7 @@ body :
 
 ```
 
-### Consulta de riesgo de fraude
+### Consulta de riesgo de fraude <a name="consulta_riesgo_fraude"></a>
 
 Esta sección explica como realizar el request al servicio asumiendo que ya se realizo el flujo autenticación.
 
