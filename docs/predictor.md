@@ -272,7 +272,7 @@ Se usan los parametros del Ejemplo \# 1, para mostrar el contenido esperado en f
   {
     "idsesion": "cc733c92685345f68e49bec741188ebb",
     "transaction_processing_date": "2021-12-30 16:34:47",
-    "transaction_processing_amount": "1000",
+    "transaction_processing_amount": 10000.0,
     "transaction_card_id": "004C93004C93004C93004C93004C9304C9304C93",
     "transaction_retail_code": "1111111111",
     "transaction_payer_id": "43434343434343434343434333",
