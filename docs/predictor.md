@@ -93,46 +93,53 @@ body :
 
 ```
 
-### Consulta de Prediccion
+### Consulta de riesgo de fraude
+
+Esta sección explica como realizar el request al servicio asumiendo que ya se realizo el flujo autenticación.
 
 #### Descripcion de campos
 
-| Campo      | Requerido | Tipo | Hash | Descripción     |
-| :------------- | :----------: |:----------: | :----------: | :----------: |
-| idsesion | Si | String | No |identificador unico de la transaccion. Ese valor sera usado para monitorear y auditar la transacción|
-| transaction_processing_date | Si | String | No | Fecha de procesamiento de la transaccion en formato '%Y-%m-%d %H:%M:%S'. Se asume timezone UTC-5|
-| transaction_processing_amount | Si | float/int | No | Monto de la transacción. |
-| transaction_card_id | Si | string | Si| identificador de la tarjeta. |
-| transaction_retail_code | Si | String | No | identificador del retail code de la transacción. |
-| transaction_payer_id | Si | String | Si | Identificador del pagador |
-| transaction_payer_email | Si | String | Si | Email del pagador |
-| ip_location_country  | Si | String | No | Pais donde se esta ejecutando la transacción |
-| ip_location_city  | Si | String | No | Ciuidad donde se esta ejecutando la transacción |
-| merchant_ciiu  | Si | Int | No | Codigo ciiu del comercio |
-| merchant_isic_division_id | Si | Int | No |Codigo isic de la division del comercio |
-| card_country | Si | String | No | Codigo Iso del pais de la tarjeta|
-| card_bin | Si | String | No | Codigo Bin del de la tarjeta|
-| transaction_card_installments  | Si | Int | No | numero de cuotas de la transaccion|
-| transaction_payer_phone | Si | String | Si | numero de telefono del pagador|
-| transaction_payer_mobile | Si | String | Si | numero de telefono movil del pagador|
-| transaction_ip_address | Si | String | No | Ip de la transacción |
-| user_agent | Si | String | No | User agent de la transacción. No se comprueba si esl User agent es valido, se usa para extraer el navegador y el sistema operativo|
+En la siguiente tabla se muestran los campos requeridos para realizar la consulta al servicio de sobre el riesgo de fraude de una transacción.
 
-**NOTA campos vacios**: para los campos `transaction_card_id`, `transaction_retail_code`, `transaction_payer_id`, `transaction_payer_email`, `ip_location_country`, `ip_location_city`, `ip_location_city` Si la transaccion no tiene valor del campo requerido se debe enviar un string vacio '' o vacio en el caso de campos numericos.
+| Campo      | Requerido | Tipo | Hash | Acepta vacio |Descripción     |
+| :------------- | :----------: |:----------: | :----------: | :----------: |:----------: |
+| idsesion | Si | String | No | No | identificador unico de la transaccion. Ese valor sera usado para monitorear y auditar la transacción|
+| transaction_processing_date | Si | String | No | No | Fecha de procesamiento de la transaccion en formato '%Y-%m-%d %H:%M:%S'. Se asume timezone UTC-5|
+| transaction_processing_amount | Si | float/int | No | No | Monto de la transacción. |
+| transaction_card_id | Si | string | Si| Si|identificador de la tarjeta. |
+| transaction_retail_code | Si | String | No | Si | identificador del retail code de la transacción. |
+| transaction_payer_id | Si | String | Si | Si |Identificador del pagador |
+| transaction_payer_email | Si | String | Si | Si | Email del pagador |
+| ip_location_country  | Si | String | No | Si | Pais donde se esta ejecutando la transacción |
+| ip_location_city  | Si | String | No | Si |Ciuidad donde se esta ejecutando la transacción |
+| merchant_ciiu  | Si | Int | No | Si |Codigo ciiu del comercio |
+| merchant_isic_division_id | Si | Int | No | Si| Codigo isic de la division del comercio |
+| card_country | Si | String | No | Si |Codigo Iso del pais de la tarjeta|
+| card_bin | Si | String | No | Si |Codigo Bin del de la tarjeta|
+| transaction_card_installments  | Si | Int | No | Si |numero de cuotas de la transaccion|
+| transaction_payer_phone | Si | String | Si | Si |numero de telefono del pagador|
+| transaction_payer_mobile | Si | String | Si | Si |numero de telefono movil del pagador|
+| transaction_ip_address | Si | String | No | Si |Ip de la transacción |
+| user_agent | Si | String | No | Si |User agent de la transacción. No se comprueba si esl User agent es valido, se usa para extraer el navegador y el sistema operativo|
 
-**NOTA valores hash**: para los campos `transaction_card_id`, `transaction_payer_id`, `transaction_payer_email` los valores hash deben coincidir con los valores hash previamente enviados mediante el delta que se esta cargando a GCP de manera recurrente.
+**NOTA campos vacios**:  Para los campos marcados con `Acepta vacio=Si`, si la transaccion no tiene valor del campo requerido se debe enviar un string vacio '' o vacio en el caso de campos numericos.
+
+**NOTA valores hash**: Para los campos marcados con `Hash=Si` los valores hash deben coincidir con los valores hash previamente enviados mediante el delta que se esta cargando a GCP de manera recurrente.
+
+Una vez el servicio procesa los campos, responde con los siguientes campos de respuesta
+
+| Campo      | Tipo | Rango | Descripción     |
+| :------------- | :----------: | :----------: | :----------: |
+| fraud_score | float | 0.0-1.0 | Indica el riesgo de fraude calculado |
+| fraud_concept | list[str] | F1-F24 | Corresponde a los codigo de las razones de fraude que son explicadas en la siguiente sección |
+| legal_score | float | 0.0-1.0 | Indicador legalidad de la transacción, siempre es 1-fraud_score |
+| legal_concept | list[str] | L1-L24 | Corresponde a los codigo de las razones por la cual el servicio asigna el `legal_score`. El significado de se encuentra en la siguiente sección |
+| fraud_score | Boolean | True, False | Indica si la respuesta es confiable. Un False indica que el proceso ha detectado errores en la actualización de la información en GCP, y por lo tanto el resultado no es confiable |
 
 
-Estos son los campos de respuesta
+#### Descripción de fraud_concept
 
-| Campo      | Descripción     |
-| :------------- | :----------: |
-| fraud_score | de 0 a 1 |
-**llenar**
-
-#### Codigos de respuesta para explicacion
-
-Explicacion de score fraudulento
+De acuerdo a los patrones detectados, el servicio responde las razones que influyeron en el calculo de riesgo de fraude dado. Estas codificaciones tienen que ser usadas para determinar el riesgo de exposición de fraude y tomar acciones sobre la transacción procesada.
 
 | fraude descripcion                                                      | fraude_code   |
 |:------------------------------------------------------------------------|:--------------|
@@ -161,7 +168,9 @@ Explicacion de score fraudulento
 | calidad de datos en el navegador                                        | F23           |
 | calidad de datos en sistema operativo                                   | F24           |
 
-Explicacion de score legal
+#### Descripción de legal_concept
+
+De acuerdo a los patrones detectados, el servicio responde las razones que influyeron en el calculo del score de legalidad dado. Estas codificaciones tienen que ser usadas para determinar el riesgo de exposición de fraude y tomar acciones sobre la transacción procesada.
 
 | legal descripcion                                   | legal_code   |
 |:----------------------------------------------------|:-------------|
@@ -190,42 +199,44 @@ Explicacion de score legal
 | calidad de datos en el navegador                    | L23          |
 | calidad de datos en sistema operativo               | L24          |
 
-
-
 #### Datos de prueba y descripción
 
+En esta sección se describen valores ficticios que pueden ser usados para realizar preubas de integración en el servicio.
 
 ##### Request URL de pruebas
 
 <https://to_be_defined_url/predict>
 
-La tabla contiente ejemplo que pueden ser usados para desarrollo de la integración.
+**NOTA**: Para la integración en sistema productivo se debe solicar la URL y su certificado. Este endpoint no da respuestas que no esten explicadas en las tablas de la siguientes secciones.
+
+##### Ejemplos
+
+La siguiente tabla contiene valores que pueden ser usados para realizar pruebas de integración.
 
 \# Ej | idsesion | transaction_processing_date |transaction_processing_amount | transaction_card_id | transaction_retail_code | transaction_payer_id | transaction_payer_email | ip_location_country | ip_location_city | merchant_ciiu | merchant_isic_division_id | card_country | card_bin | transaction_card_installments | transaction_payer_phone | transaction_payer_mobile | transaction_ip_address | user_agent |
 | :------------- | :------------- | :----------: | :----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |
-|         1 | cc733c92685345f68e49bec741188ebb | Fecha de hoy                  |                            1000 | 004C93004C93004C93004C93004C9304C9304C93 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            8888 |                          66 | CO             | CO         |                               1 |                           | 45678987456547898745       | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
-|         2 | a41f020c2d4d433fb1d3979f1043fae0 | Fecha de hoy                  |                           17900 | 5904590459045904590459045904590459045904 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            7777 |                          72 | CO             | CO         |                               6 | 32123321233212332132      |                            | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
-|         3 | aca531aee7ba40c39d0cfbfb5d8ca6c2 | Fecha de hoy                  |                           18900 |                                          |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            8888 |                          66 | CO             | CO         |                              36 |                           | 45678987456547898745       | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
-|         4 | 9626bf792f974c0c9aaede080adab7df | Fecha de hoy                  |                           10900 | 004C93004C93004C93004C93004C9304C9304C93 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            7777 |                          72 | CO             | CO         |                               1 | 32123321233212332132      |                            | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
-|         5 | 69261bc24a714de7bc8b1beb0d9320ac | Fecha de hoy                  |                           50900 | 5904590459045904590459045904590459045904 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            8888 |                          66 | US             | CO         |                               6 |                           | 45678987456547898745       | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
-|         6 | a82c1e8766b244a6bb4b76449a53270c | Fecha de hoy                  |                          500000 |                                          |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            7777 |                          72 | CO             | CO         |                              36 | 32123321233212332132      |                            | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
-|         7 | 7217d7d26f244bf5942d3e4cf15982c1 | Fecha de hoy                  |                         1500000 | 004C93004C93004C93004C93004C9304C9304C93 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            8888 |                          66 | CO             | CO         |                               1 |                           | 45678987456547898745       | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
-|         8 | 01b96a66733e47faabbd3011ea911cb2 | Fecha de hoy                  |                            1000 | 5904590459045904590459045904590459045904 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            7777 |                          72 | CO             | CO         |                               6 | 32123321233212332132      |                            | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
-|         9 | 7019f6a5277149718825bdd51d2a12b3 | Fecha de hoy                  |                           17900 |                                          |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            8888 |                          66 | CO             | CO         |                              36 |                           | 45678987456547898745       | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
-|        10 | a5e24f10dae74e5bbfe023f83bf83840 | Fecha de hoy                  |                           18900 | 004C93004C93004C93004C93004C9304C9304C93 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | US                    | Bogota             |            7777 |                          72 | CO             | CO         |                               1 | 32123321233212332132      |                            | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
-|        11 | a03345ac96b34bbebc2dbe2943446578 | Fecha de hoy                  |                           10900 | 5904590459045904590459045904590459045904 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            8888 |                          66 | CO             | CO         |                               6 |                           | 45678987456547898745       | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
-|        12 | 566d86878fb645c2b5f82486d147bcd2 | Fecha de hoy                  |                           50900 |                                          |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            7777 |                          72 | CO             | CO         |                              36 | 32123321233212332132      |                            | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
-|        13 | d9117f5238394641a4707de16f437d8b | Fecha de hoy                  |                          500000 | 004C93004C93004C93004C93004C9304C9304C93 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            8888 |                          66 | CO             | CO         |                               1 |                           | 45678987456547898745       | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
-|        14 | 4bd9201331c54f87b9c57148993aea1c | Fecha de hoy                  |                         1500000 | 5904590459045904590459045904590459045904 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            7777 |                          72 | CO             | US         |                               6 | 32123321233212332132      |                            | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
-|        15 | 59a7546dca9f46c9a033bb9d3bf2b86f | Fecha de hoy                  |                            1000 |                                          |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            8888 |                          66 | CO             | CO         |                              36 |                           | 45678987456547898745       | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
-|        16 | 11804b641b8c4606a3eb8ba56cadfe2c | Fecha de hoy                  |                           17900 | 004C93004C93004C93004C93004C9304C9304C93 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            7777 |                          72 | CO             | CO         |                               1 | 32123321233212332132      |                            | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
-|        17 | 9e65861e41bf4b1e95ebea32c7815ad2 | Fecha de hoy                  |                           18900 | 5904590459045904590459045904590459045904 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            8888 |                          66 | CO             | CO         |                               6 |                           | 45678987456547898745       | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
-|        18 | 3e845e4658044f4bb1c3296931fb5bd1 | Fecha de hoy                  |                           10900 |                                          |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            7777 |                          72 | CO             | CO         |                              36 | 32123321233212332132      |                            | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
-|        19 | 4eb8bd82bb8b41329086a9edafd8f8eb | Fecha de hoy                  |                           50900 | 004C93004C93004C93004C93004C9304C9304C93 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            8888 |                          66 | US             | CO         |                               1 |                           | 45678987456547898745       | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
-|        20 | af90e67e73f049efaec35b986527fe9d | 2021-07-30 16:17:18           |                          500000 | 5904590459045904590459045904590459045904 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            7777 |                          72 | CO             | CO         |                               6 | 32123321233212332132      |                            | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
+|         1 | cc733c92685345f68e49bec741188ebb | Fecha de hoy                  |                            1000 | 004C93004C93004C93004C93004C9304C9304C93 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            8888 |                          66 | CO             | 123456     |                               1 |                           | 45678987456547898745       | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
+|         2 | a41f020c2d4d433fb1d3979f1043fae0 | Fecha de hoy                  |                           17900 | 5904590459045904590459045904590459045904 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            7777 |                          72 | CO             | 123456     |                               6 | 32123321233212332132      |                            | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
+|         3 | aca531aee7ba40c39d0cfbfb5d8ca6c2 | Fecha de hoy                  |                           18900 |                                          |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            8888 |                          66 | CO             |            |                              36 |                           | 45678987456547898745       | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
+|         4 | 9626bf792f974c0c9aaede080adab7df | Fecha de hoy                  |                           10900 | 004C93004C93004C93004C93004C9304C9304C93 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            7777 |                          72 | CO             | 123456     |                               1 | 32123321233212332132      |                            | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
+|         5 | 69261bc24a714de7bc8b1beb0d9320ac | Fecha de hoy                  |                           50900 | 5904590459045904590459045904590459045904 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            8888 |                          66 | CO             | 123456     |                               6 |                           | 45678987456547898745       | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
+|         6 | a82c1e8766b244a6bb4b76449a53270c | Fecha de hoy                  |                          500000 |                                          |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            7777 |                          72 | CO             |            |                              36 | 32123321233212332132      |                            | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
+|         7 | 7217d7d26f244bf5942d3e4cf15982c1 | Fecha de hoy                  |                         1500000 | 004C93004C93004C93004C93004C9304C9304C93 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            8888 |                          66 | US             | 123456     |                               1 |                           | 45678987456547898745       | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
+|         8 | 01b96a66733e47faabbd3011ea911cb2 | Fecha de hoy                  |                            1000 | 5904590459045904590459045904590459045904 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            7777 |                          72 | CO             | 123456     |                               6 | 32123321233212332132      |                            | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
+|         9 | 7019f6a5277149718825bdd51d2a12b3 | Fecha de hoy                  |                           17900 |                                          |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            8888 |                          66 | CO             |            |                              36 |                           | 45678987456547898745       | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
+|        10 | a5e24f10dae74e5bbfe023f83bf83840 | Fecha de hoy                  |                           18900 | 004C93004C93004C93004C93004C9304C9304C93 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            7777 |                          72 | CO             | 123456     |                               1 | 32123321233212332132      |                            | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
+|        11 | a03345ac96b34bbebc2dbe2943446578 | Fecha de hoy                  |                           10900 | 5904590459045904590459045904590459045904 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            8888 |                          66 | CO             | 123456     |                               6 |                           | 45678987456547898745       | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
+|        12 | 566d86878fb645c2b5f82486d147bcd2 | Fecha de hoy                  |                           50900 |                                          |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            7777 |                          72 | CO             |            |                              36 | 32123321233212332132      |                            | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
+|        13 | d9117f5238394641a4707de16f437d8b | Fecha de hoy                  |                          500000 | 004C93004C93004C93004C93004C9304C9304C93 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            8888 |                          66 | CO             | 123456     |                               1 |                           | 45678987456547898745       | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
+|        14 | 4bd9201331c54f87b9c57148993aea1c | Fecha de hoy                  |                         1500000 | 5904590459045904590459045904590459045904 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            7777 |                          72 | US             | 123456     |                               6 | 32123321233212332132      |                            | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
+|        15 | 59a7546dca9f46c9a033bb9d3bf2b86f | Fecha de hoy                  |                            1000 |                                          |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            8888 |                          66 | CO             |            |                              36 |                           | 45678987456547898745       | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
+|        16 | 11804b641b8c4606a3eb8ba56cadfe2c | Fecha de hoy                  |                           17900 | 004C93004C93004C93004C93004C9304C9304C93 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            7777 |                          72 | CO             | 123456     |                               1 | 32123321233212332132      |                            | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
+|        17 | 9e65861e41bf4b1e95ebea32c7815ad2 | Fecha de hoy                  |                           18900 | 5904590459045904590459045904590459045904 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            8888 |                          66 | CO             | 123456     |                               6 |                           | 45678987456547898745       | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
+|        18 | 3e845e4658044f4bb1c3296931fb5bd1 | Fecha de hoy                  |                           10900 |                                          |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            7777 |                          72 | CO             |            |                              36 | 32123321233212332132      |                            | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
+|        19 | 4eb8bd82bb8b41329086a9edafd8f8eb | Fecha de hoy                  |                           50900 | 004C93004C93004C93004C93004C9304C9304C93 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            8888 |                          66 | CO             | 123456     |                               1 |                           | 45678987456547898745       | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
+|        20 | af90e67e73f049efaec35b986527fe9d | 2021-07-30 16:17:18           |                          500000 | 5904590459045904590459045904590459045904 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            7777 |                          72 | CO             | 123456     |                               6 | 32123321233212332132      |                            | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
 
-
-respuestas
+De acuerdo al número de ejemplo usado, el servicio responde con las siguientes repuestas.
 
 \# Ej | fraud_score | fraud_concept |legal_score| legal_concept | reliable |
 | :-------------  |:------------- |:------------- | :------------- |:------------- |:------------- |
@@ -250,42 +261,39 @@ respuestas
 |        19 |          0    | ['F7', 'F8', 'F9']    |          1    | ['L3', 'L24', 'L23']  | True       |
 |        20 |          0.25 | ['F1', 'F2', 'F3']    |          0.75 | ['L9', 'L8', 'L7']    | False      |
 
-##### Request de ejemplo
+Se usan los parametros del Ejemplo \# 1, para mostrar el contenido esperado en formato `json` para el request y el response del servicio.
 
-Se usan los parametros del Ejemplo \# 1
+**request**:
 
 ```json
   {
     "idsesion": "cc733c92685345f68e49bec741188ebb",
     "transaction_processing_date": "2021-12-30 16:34:47",
-    "transaction_processing_amount": "17900",
-    "transaction_card_id": "004C9330861A86F8133684ED22B427F1A63C5904",
-    "transaction_retail_code": "0010002210",
-    "transaction_payer_id": "43432031303031333539373036",
-    "transaction_payer_email": "416E67696538363032313440686F746D61696C2E636F6D",
+    "transaction_processing_amount": "1000",
+    "transaction_card_id": "004C93004C93004C93004C93004C9304C9304C93",
+    "transaction_retail_code": "1111111111",
+    "transaction_payer_id": "43434343434343434343434333",
+    "transaction_payer_email": "0123ABC0123ABC0123ABC0123ABC0123ABC0123A",
     "ip_location_country": "CO",
-    "ip_location_city": "Buga", 
-    "merchant_ciiu": "7990",
-    "merchant_isic_division_id": "65",
+    "ip_location_city": "Bogota", 
+    "merchant_ciiu": 8888,
+    "merchant_isic_division_id": 66,
     "card_country": "CO",
     "card_bin": "434082",
-    "transaction_card_installments": "1",
+    "transaction_card_installments": 1,
     "transaction_payer_phone": "",
-    "transaction_payer_mobile": "33323134343236323938",
-    "transaction_ip_address": "179.12.51.137",
-    "user_agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
+    "transaction_payer_mobile": "45678987456547898745",
+    "transaction_ip_address": "59.208.38.243",
+    "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1"
   }
 ```
 
-##### Response de ejemplo
-
-Se usan los parametros del Ejemplo \# 1
+**response**:
 
 ```json
-{"status":"OK", 
-"fraud_score": "0.65", 
-"fraud_concept": ["Diferencia con historial de pago","Empresas fachada - Frecuencia inusal de pais emisor tarjeta en comercio","Frecuencia inusual de compra en el comercio"], 
-"legal_score": "0.35", 
-"legal_concept": ["Similitud con historial de pago","Frecuencia usual de tx apr-rec en comercio","Horario usual de compra"],
-"reliable": 1  }
+{"fraud_score": 0.0, 
+"fraud_concept": ["F1", "F2", "F3"], 
+"legal_score": 1.0, 
+"legal_concept": ["L9", "L8", "L7"],
+"reliable": true  }
 ```
