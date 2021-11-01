@@ -241,7 +241,7 @@ La siguiente tabla contiene valores que pueden ser usados para realizar pruebas 
 
 De acuerdo al número de ejemplo usado, el servicio responde con las siguientes repuestas.
 
-\# Ej | fraud_score | fraud_concept |legal_score| legal_concept | reliable |
+|\# Ej | fraud_score | fraud_concept |legal_score| legal_concept | reliable |
 | :-------------  |:------------- |:------------- | :------------- |:------------- |:------------- |
 |         1 |          0    | ['F1', 'F2', 'F3']    |          1    | ['L9', 'L8', 'L7']    | True       |
 |         2 |          0.25 | ['F4', 'F5', 'F6']    |          0.75 | ['L6', 'L5', 'L4']    | True       |
