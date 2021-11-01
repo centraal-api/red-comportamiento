@@ -5,7 +5,7 @@
 1. [Descripción General](#descripcion_general)
 2. [Rest Api](#rest_api)
     1. [Autenticación](#auth)
-    2. [Consulta de riesgo de fraude](consulta_riesgo_fraude)
+    2. [Consulta de riesgo de fraude](#consulta_riesgo_fraude)
 
 ## Descripción General <a name="descripcion_general"></a>
 
