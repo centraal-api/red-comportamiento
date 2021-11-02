@@ -152,7 +152,7 @@ Esta sección explica como realizar el request al servicio asumiendo que ya se r
 En la siguiente tabla se muestran los campos requeridos para realizar la consulta al servicio de sobre el riesgo de fraude de una transacción.
 
 | Campo      | Requerido | Tipo | Hash | Acepta vacio |Descripción     |
-| :------------- | :----------: |:----------: | :----------: | :----------: |:----------: |
+| :------------- | :---------- |:---------- | :---------- | :---------- |:---------- |
 | idsesion | Si | String | No | No | identificador unico de la transaccion. Ese valor sera usado para monitorear y auditar la transacción|
 | transaction_processing_date | Si | String | No | No | Fecha de procesamiento de la transaccion en formato '%Y-%m-%d %H:%M:%S'. Se asume timezone UTC-5|
 | transaction_processing_amount | Si | float/int | No | No | Monto de la transacción. |
@@ -179,7 +179,7 @@ En la siguiente tabla se muestran los campos requeridos para realizar la consult
 Una vez el servicio procesa los campos, responde con los siguientes campos de respuesta
 
 | Campo      | Tipo | Rango | Descripción     |
-| :------------- | :----------: | :----------: | :----------: |
+| :------------- | :---------- | :---------- | :---------- |
 | fraud_score | float | 0.0-1.0 | Indica el riesgo de fraude calculado |
 | fraud_concept | list[str] | F1-F24 | Corresponde a los codigo de las razones de fraude que son explicadas en la siguiente sección |
 | legal_score | float | 0.0-1.0 | Indicador legalidad de la transacción, siempre es 1-fraud_score |
@@ -264,7 +264,7 @@ En esta sección se describen valores ficticios que pueden ser usados para reali
 La siguiente tabla contiene valores que pueden ser usados para realizar pruebas de integración.
 
 \# Ej | idsesion | transaction_processing_date |transaction_processing_amount | transaction_card_id | transaction_retail_code | transaction_payer_id | transaction_payer_email | ip_location_country | ip_location_city | merchant_ciiu | merchant_isic_division_id | card_country | card_bin | transaction_card_installments | transaction_payer_phone | transaction_payer_mobile | transaction_ip_address | user_agent |
-| :------------- | :------------- | :----------: | :----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |:----------: |
+| :------------- | :------------- | :---------- | :---------- |:---------- |:---------- |:---------- |:---------- |:---------- |:---------- |:---------- |:---------- |:---------- |:---------- |:---------- |:---------- |:---------- |:---------- |:---------- |
 |         1 | cc733c92685345f68e49bec741188ebb | Fecha de hoy                  |                            1000 | 004C93004C93004C93004C93004C9304C9304C93 |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Bogota             |            8888 |                          66 | CO             | 123456     |                               1 |                           | 45678987456547898745       | 59.208.38.243            | Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1 |
 |         2 | a41f020c2d4d433fb1d3979f1043fae0 | Fecha de hoy                  |                           17900 | 5904590459045904590459045904590459045904 |                2222222222 | 12312312312312312312312312 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Medellin           |            7777 |                          72 | CO             | 123456     |                               6 | 32123321233212332132      |                            | 171.50.70.174            | Opera/8.46.(Windows NT 6.0; so-DJ) Presto/2.9.165 Version/12.00                                                                          |
 |         3 | aca531aee7ba40c39d0cfbfb5d8ca6c2 | Fecha de hoy                  |                           18900 |                                          |                1111111111 | 43434343434343434343434333 | 0123ABC0123ABC0123ABC0123ABC0123ABC0123A | CO                    | Cali               |            8888 |                          66 | CO             |            |                              36 |                           | 45678987456547898745       | 211.17.156.245           | Opera/9.48.(X11; Linux x86_64; hi-IN) Presto/2.9.178 Version/11.00                                                                       |
