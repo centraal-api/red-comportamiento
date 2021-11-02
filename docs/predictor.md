@@ -36,9 +36,9 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
     
     | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
     | :------------- | :----------: | :----------- | :----------- |
-    | Sí | kid   | String    | Clave pridava que se obtiene del archivo de service account: <br /> "-----BEGIN PRIVATE KEY-----\nMIGEAgEAMBAGByqGSM49AgEGBS..."  |
-    | Sí | alg      | String    | Tipo de algoritmo de firmado: <br /> RS256          |
-    | Sí | typ      | String    | Tipo de token: <br /> JWT          |
+    | Sí | kid   | String    | **pkey_id** Clave pridava que se obtiene del archivo de service account |
+    | Sí | alg      | String    | Tipo de algoritmo de firmado use RS256          |
+    | Sí | typ      | String    | Tipo de token use JWT          |
     
     
     **Ejemplo headers**:
@@ -55,12 +55,12 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
            
     | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
     | :------------- | :----------: | :----------- | :----------- |
-    | Sí | iss   | String    | Email que se obtiene del archivo de service account: <br /> "sa-evertec@escudo-redcomp.iam.gserviceaccount.com"  |
-    | Sí | sub   | String    | Email que se obtiene del archivo de service account: <br /> "sa-evertec@escudo-redcomp.iam.gserviceaccount.com"   |
-    | Sí | aud   | String    | Url de autenticacion de Google GCP: <br /> "https://www.googleapis.com/oauth2/v4/token"          |
+    | Sí | iss   | String    | **Email** que se obtiene del archivo de service account en paso 1 |
+    | Sí | sub   | String    | **Email** que se obtiene del archivo de service account en paso 1 |
+    | Sí | aud   | String    | Url de autenticacion de Google GCP |
     | Sí | iat   | String    | Hora de generación del token JWT, debe ser un numero entero timestamp  <br /> Ej: 1635870886         |
     | Sí | exp   | String    | Hora de expiración del token, se suman segundos al timestamp de generacion del token. <br /> Ej: 1635870886 + 3600 Segundos          |
-    | Sí | target_audience   | String    | Endpoint del backend del servicio de predicción de riesgo:  <br /> "https://us-central1-escudo-redcomp.cloudfunctions.net/dev_predictor_service"          |
+    | Sí | target_audience   | String    | Endpoint del backend del servicio de predicción de riesgo |
     
     
     **Ejemplo payload**:
@@ -76,7 +76,8 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
     }
     ```
 
-3. Codifique `aditional_headers` y `payload` y **fírmelos** creando un JWT usando `RS256` 
+3. Codifique `aditional_headers` y `payload` y **fírmelos** creando un JWT usando `RS256` -> **signed_jwt** 
+
 
 Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firmado por google:
 
@@ -90,15 +91,15 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
-| Sí | Autorization   | String    | Tipo de autorizacion: <br /> "Bearer  + **signed_jwt**"  |
-| Sí | Content-Type      | String    | Tipo de contenido: <br /> application/x-www-form-urlencoded          |
+| Sí | Autorization   | String    | Tipo de autorizacion, en este campo se debe concatenar a la palabra `Bearer ` el JWT firmado obtenido del paso 3 **signed_jwt** |
+| Sí | Content-Type   | String    | Tipo de contenido    |
 
 **Query Params**:
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
-| Sí | grant_type   | String    | Tipo de permisos a otorgar: <br /> urn:ietf:params:oauth:grant-type:jwt-bearer   |
-| Sí | assertion      | String    | Afrimacion: <br /> **signed_jwt**          |
+| Sí | grant_type   | String    | Tipo de permisos a otorgar oauth jwt bearer, utilize: "urn:ietf:params:oauth:grant-type:jwt-bearer" |
+| Sí | assertion      | String  | Afrimacion, se utilizar el JWT obtenido del paso 3 **signed_jwt**          |
 
 #### Ejemplo Request
 
