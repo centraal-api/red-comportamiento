@@ -30,7 +30,7 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
     
     Ej: "sa-evertec@escudo-redcomp.iam.gserviceaccount.com"  
 
-2. Genere el JWT autofirmado. En este paso puede configurar el tiempo de expiración del token, tambien debe tener el 'target_audience' que es el endpoint del servicio predictor:
+2. Genere el JWT autofirmado. En este paso puede configurar el tiempo de expiración del token en segundos sumandolo a la hora de generacion del token como se muestra en el ejemplo. Adicionalmente, se debe agregar el 'target_audience' que es el endpoint del servicio predictor:
 
     additional_headers = 
     ```json
@@ -47,9 +47,9 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
         "iss":"sa-evertec@escudo-redcomp.iam.gserviceaccount.com",
         "sub":"sa-evertec@escudo-redcomp.iam.gserviceaccount.com",
         "aud":"https://www.googleapis.com/oauth2/v4/token",
-        "iat":"tiempo_de_generacion",
-        "exp":"issued + tiempo_de_expiración",
-        "target_audience":"https://us-central1-escudo-redcomp.cloudfunctions.net/function-1"
+        "iat":"**hora_de_generacion**",
+        "exp":"**hora_de_generacion** + **tiempo_de_expiración**",
+        "target_audience":"https://us-central1-escudo-redcomp.cloudfunctions.net/dev_predictor_service"
     }
     ```
 
