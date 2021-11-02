@@ -17,7 +17,7 @@ El proposito de esta solucion es el de la construccion de un sistema de evaluaci
 
 ### Autenticación <a name="auth"></a>
 
-![jwt](docs/img/jwt.png)
+![jwt](https://github.com/centraal-api/red-comportamiento/blob/main/docs/img/jwt.png)
 
 Debes autentícarte antes para realizar invocaciones del servicio de predicción.
 Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta de servicio proporcionada 'json_cred.json' para intercambiarlo por un token de ID firmado por Google. La cuenta de servicio es la misma que se esta utilizando para realizar el cargue de los deltas desde on-premise - Google Cloud
