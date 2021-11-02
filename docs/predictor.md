@@ -36,9 +36,9 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
     
     | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
     | :------------- | :----------: | :----------- | :----------- |
-    | Sí | kid   | String    | **pkey_id** Clave pridava que se obtiene del archivo de service account |
-    | Sí | alg      | String    | Tipo de algoritmo de firmado use RS256          |
-    | Sí | typ      | String    | Tipo de token use JWT          |
+    | Sí | kid   | String    | **pkey_id** Clave pridava que se obtiene del archivo de service account paso 1 |
+    | Sí | alg      | String    | Tipo de algoritmo de firmado, use: "RS256"          |
+    | Sí | typ      | String    | Tipo de token, use: "JWT"          |
     
     
     **Ejemplo headers**:
@@ -91,7 +91,7 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
-| Sí | Autorization   | String    | Tipo de autorizacion, en este campo se debe concatenar a la palabra `Bearer ` el JWT firmado obtenido del paso 3 **signed_jwt** |
+| Sí | Autorization   | String    | Tipo de autorizacion, en este campo se debe concatenar a la palabra `Bearer ` el JWT firmado que se obtiene en el paso 3: **signed_jwt** |
 | Sí | Content-Type   | String    | Tipo de contenido    |
 
 **Query Params**:
@@ -99,7 +99,7 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
 | Sí | grant_type   | String    | Tipo de permisos a otorgar oauth jwt bearer, utilize: "urn:ietf:params:oauth:grant-type:jwt-bearer" |
-| Sí | assertion      | String  | Afrimacion, se utilizar el JWT obtenido del paso 3 **signed_jwt**          |
+| Sí | assertion      | String  | Afrimacion, se utilizar el JWT que se obtiene en el paso 3: **signed_jwt**          |
 
 #### Ejemplo Request
 
