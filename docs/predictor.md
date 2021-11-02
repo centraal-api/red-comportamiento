@@ -225,7 +225,7 @@ En esta sección se describen valores ficticios que pueden ser usados para reali
 
 ##### Request URL de pruebas
 
-<https://to_be_defined_url/predict>
+<https://centraal.dev>
 
 **NOTA**: Para la integración en sistema productivo se debe solicar la URL y su certificado. Este endpoint no da respuestas que no esten explicadas en las tablas de la siguientes secciones.
 
