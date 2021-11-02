@@ -22,10 +22,12 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
 
 1. Obtenga la clave privada y correo electronico que vienen del service account:
 
-    pkey_id = json_cred['private_key'] 
+    pkey_id = json_cred['private_key']
+    
     Ej: "-----BEGIN PRIVATE KEY-----\nMIGEAgEAMBAGByqGSM49AgEGBS..."
 
-    email = json_cred['client_email'] 
+    email = json_cred['client_email']
+    
     Ej: "sa-evertec@escudo-redcomp.iam.gserviceaccount.com"  
 
 2. Genere el JWT autofirmado. En este paso puede configurar el tiempo de expiración del token, tambien debe tener el 'target_audience' que es el endpoint del servicio predictor:
