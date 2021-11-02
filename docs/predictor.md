@@ -60,9 +60,9 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 ### Parámetros
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
-| :------------- | :----------: | -----------: | -----------: |
-| Sí | headers   | JSON    | Contiene el tipo de autorizacion y contenido de la cabecera <br/> **Autorization**: "Bearer " + signed_jwt <br/> **Content-Type**: "application/x-www-form-urlencoded"   |
-| Sí | body      | JSON    | Cuerpo del mensaje que requiere Google <br/>  **grant_type**: "urn:ietf:params:oauth:grant-type:jwt-bearer" <br/> **assertion**: signed_jwt          |
+| :------------- | :----------: | :----------- | :----------- |
+| Sí | headers   | JSON    | Contiene el tipo de autorizacion y contenido de la cabecera. <br/> **Autorization**: "Bearer " + signed_jwt <br/> **Content-Type**: "application/x-www-form-urlencoded"   |
+| Sí | body      | JSON    | Cuerpo del mensaje que requiere Google. <br/>  **grant_type**: "urn:ietf:params:oauth:grant-type:jwt-bearer" <br/> **assertion**: signed_jwt          |
 
 #### Ejemplo Request
 
