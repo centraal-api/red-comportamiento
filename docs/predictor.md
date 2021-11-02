@@ -30,9 +30,19 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
     
     Ej: "sa-evertec@escudo-redcomp.iam.gserviceaccount.com"  
 
-2. Genere el JWT autofirmado. En este paso debe configurar el tiempo de expiración del token `exp` en segundos sumandolo a la hora de generacion del token `iat` como se muestra en el ejemplo. Adicionalmente, se debe agregar el 'target_audience' que es el endpoint del servicio predictor:
+2. Genere el JWT autofirmado. En este paso, en el payload, debe configurar el tiempo de expiración del token `exp` en segundos sumandolo a la hora de generacion del token `iat` como se muestra en el ejemplo. Adicionalmente, se debe agregar el 'target_audience' que es el endpoint del servicio predictor:
 
-    additional_headers = 
+    **Headers**:
+    
+    | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
+    | :------------- | :----------: | :----------- | :----------- |
+    | Sí | kid   | String    | Clave pridava que se obtiene del archivo de service account: <br /> "-----BEGIN PRIVATE KEY-----\nMIGEAgEAMBAGByqGSM49AgEGBS..."  |
+    | Sí | alg      | String    | Tipo de algoritmo de firmado: <br /> RS256          |
+    | Sí | typ      | String    | Tipo de token: <br /> JWT          |
+    
+    
+    **Ejemplo headers**:
+    
     ```json
     {
         "kid":"-----BEGIN PRIVATE KEY-----\nMIGEAgEAMBAGByqGSM49AgEGBS...",
@@ -41,14 +51,26 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
     }    
     ```
     
-    payload = 
+    **Payload**:
+           
+    | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
+    | :------------- | :----------: | :----------- | :----------- |
+    | Sí | iss   | String    | Email que se obtiene del archivo de service account: <br /> "sa-evertec@escudo-redcomp.iam.gserviceaccount.com"  |
+    | Sí | sub   | String    | Email que se obtiene del archivo de service account: <br /> "sa-evertec@escudo-redcomp.iam.gserviceaccount.com"   |
+    | Sí | aud   | String    | Url de autenticacion de Google GCP: <br /> "https://www.googleapis.com/oauth2/v4/token"          |
+    | Sí | iat   | String    | Hora de generación del token JWT, debe ser un numero entero timestamp  <br /> Ej: 1635870886         |
+    | Sí | exp   | String    | Hora de expiración del token, se suman segundos al timestamp de generacion del token. Ej 1635870886 + 3600 Segundos          |
+    | Sí | target_audience   | String    | Endpoint del backend del servicio de predicción de riesgo          |
+    
+    
+    **Ejemplo payload**:
+    
     ```json
     {
         "iss":"sa-evertec@escudo-redcomp.iam.gserviceaccount.com",
         "sub":"sa-evertec@escudo-redcomp.iam.gserviceaccount.com",
         "aud":"https://www.googleapis.com/oauth2/v4/token",
-        "iat":1635870886,
-        // para exp estamos sumando 3600 segundos para la expiración del token
+        "iat":1635870886,        
         "exp":1635874633,
         "target_audience":"https://us-central1-escudo-redcomp.cloudfunctions.net/dev_predictor_service"
     }
@@ -68,15 +90,15 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
-| Sí | Autorization   | String    | "Bearer  + **signed_jwt**"  |
-| Sí | Content-Type      | String    | application/x-www-form-urlencoded          |
+| Sí | Autorization   | String    | Tipo de autorizacion: <br /> "Bearer  + **signed_jwt**"  |
+| Sí | Content-Type      | String    | Tipo de contenido: <br /> application/x-www-form-urlencoded          |
 
 **Query Params**:
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
-| Sí | grant_type   | String    | urn:ietf:params:oauth:grant-type:jwt-bearer   |
-| Sí | assertion      | String    | **signed_jwt**          |
+| Sí | grant_type   | String    | Tipo de permisos a otorgar: <br /> urn:ietf:params:oauth:grant-type:jwt-bearer   |
+| Sí | assertion      | String    | Afrimacion: <br /> **signed_jwt**          |
 
 #### Ejemplo Request
 
@@ -122,7 +144,7 @@ Esta sección explica como realizar el request al servicio asumiendo que ya se r
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
-| Sí | Autorization   | String    | "Bearer  + **id_token**" |
+| Sí | Autorization   | String    | Tipo de autorizacion: <br /> "Bearer  + **id_token**" |
 
 
 **Body**:
