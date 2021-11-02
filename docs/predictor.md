@@ -47,8 +47,8 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
         "iss":"sa-evertec@escudo-redcomp.iam.gserviceaccount.com",
         "sub":"sa-evertec@escudo-redcomp.iam.gserviceaccount.com",
         "aud":"https://www.googleapis.com/oauth2/v4/token",
-        "iat":"**hora_de_generacion**",
-        "exp":"**hora_de_generacion** + **tiempo_de_expiración**",
+        "iat":**interger_hora_de_generacion**,
+        "exp":**iat** + **integer_tiempo_de_expiración**,
         "target_audience":"https://us-central1-escudo-redcomp.cloudfunctions.net/dev_predictor_service"
     }
     ```
