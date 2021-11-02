@@ -59,21 +59,30 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 ### Parámetros
 
+#### Headers: Contiene el tipo de autorizacion y contenido de la cabecera.
+
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
-| Sí | Headers   | JSON    | Contiene el tipo de autorizacion y contenido de la cabecera. <br/> **Autorization**: "Bearer " + signed_jwt <br/> **Content-Type**: "application/x-www-form-urlencoded"   |
-| Sí | Query Params      | JSON    | Cuerpo del mensaje que requiere Google. <br/>  **grant_type**: "urn:ietf:params:oauth:grant-type:jwt-bearer" <br/> **assertion**: signed_jwt          |
+| Sí | Autorization   | String    | "Bearer " + **signed_jwt**  |
+| Sí | Content-Type      | String    | application/x-www-form-urlencoded          |
+
+#### Query Params:
+
+| **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
+| :------------- | :----------: | :----------- | :----------- |
+| Sí | grant_type   | String    | urn:ietf:params:oauth:grant-type:jwt-bearer   |
+| Sí | assertion      | String    | **signed_jwt**          |
 
 #### Ejemplo Request
 
-Headers =
+**Headers** :
 ```json
 {
    "Autorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjUxY2VjM2JiZTJiODAwNWVlYTA1NDQ4MTE5NGExMDQxZTllZDRjZTgifQ.eyJpc3MiOiJzYS1ldmVydGVjQGVzY3Vkby1yZWRjb21wLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwic3ViIjoic2EtZXZlcnRlY0Blc2N1ZG8tcmVkY29tcC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsImF1ZCI6Imh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92NC90b2tlbiIsImlhdCI6MTYzNTQ0NzkzMywiZXhwIjoxNjM1NDUxNTMzLCJ0YXJnZXRfYXVkaWVuY2UiOiJodHRwczovL3VzLWNlbnRyYWwxLWVzY3Vkby1yZWRjb21wLmNsb3VkZnVuY3Rpb25zLm5ldC9mdW5jdGlvbi0xIn0.atmUByDD9UHsMs3pVjoqvUDDQYMLhxbb0c_VUoRYnIohIcRHC4uZLYpOr9tUZmhxllqKVS43kh7KSHepvm507HATHEjFWb8zg1hamgjtoDULxplMU82jo7CHC6HMRg4oj41LMSlKBxXC8fKVsdovtXDPY7XPgRPRPQRcAz4vDxnjUvEiM4x-grU6EUZ_VPzRs68WOZMGx0a-ELOir7UOIBniHRz3xDOf-g14voZqv5vm_acJea9yOpQQNxEhU345VZ6Vd2jVDW0xMeIsq4PaMjxP7E3CU3D0KBxL703aNwVb7tOAaXc2iqDA7Uz-GW2Ar4a_ct8Fv62FcTWaPjxmcw",
    "Content-Type":"application/x-www-form-urlencoded"
 }
 ```
-Query Params :
+**Query Params** :
 ```json
 {
    "grant_type":"urn:ietf:params:oauth:grant-type:jwt-bearer",
@@ -102,6 +111,14 @@ Esta sección explica como realizar el request al servicio asumiendo que ya se r
 
 #### Descripcion de campos
 
+**Headers**: Se debe utilizar el id_token obenido del servicio de autorizacion para identificar el tipo.
+
+| **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
+| :------------- | :----------: | :----------- | :----------- |
+| Sí | Autorization   | String    | "Bearer " + **id_token**  |
+
+
+**Body**:
 En la siguiente tabla se muestran los campos requeridos para realizar la consulta al servicio de sobre el riesgo de fraude de una transacción.
 
 | Campo      | Requerido | Tipo | Hash | Acepta vacio |Descripción     |
@@ -268,6 +285,14 @@ Se usan los parametros del Ejemplo \# 1, para mostrar el contenido esperado en f
 
 **request**:
 
+**Headers**:
+```json
+  {
+    "Authorization":"Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg1ODI4YzU5Mjg0YTY5YjU0YjI3NDgzZTQ4N2MzYmQ0NmNkMmEyYjMiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJodHRwczovL3VzLWNlbnRyYWwxLWVzY3Vkby1yZWRjb21wLmNsb3VkZnVuY3Rpb25zLm5ldC9kZXZfcHJlZGljdG9yX3NlcnZpY2UiLCJhenAiOiJzYS1ldmVydGVjQGVzY3Vkby1yZWRjb21wLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiZW1haWwiOiJzYS1ldmVydGVjQGVzY3Vkby1yZWRjb21wLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV4cCI6MTYzNTg2OTAzMiwiaWF0IjoxNjM1ODY1NDMyLCJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJzdWIiOiIxMTYzNDA0ODk3NDU3MTQyNzMwMzgifQ.A_21MDk5rL41s2Wq0I20IN5si9Bv4Be5ZQc68BGIe9rUXOPuTRr-cdmyIHdS54G0FSc7ZJ1OBkTVb7JpjHyi41xEwzG5c7YP3Y51-KE6lVEvI1lBFDAOo6ymcQbRR4bNXNxSjYGMOFT7ZXj5FP-HF9jxvH-NyOASbVGhRGO9uznESVUwgD_vU5xaiJ0Y0Y2_gpPQmwBc7cvuYL6dG7B8FRSupxwRZNBD1I01wkPTw2RlwwHU1LcHq_2jzz4KWnpQKggSqj63RaQPlWr9ky2qQYj9YN3Xe2G9hSS1MTJaNr78YnJLr2QaT_QnGi1acZs19i-YgorZFDr99YStzF8_7g"
+  }
+```
+
+**Body**:
 ```json
   {
     "idsesion": "cc733c92685345f68e49bec741188ebb",
