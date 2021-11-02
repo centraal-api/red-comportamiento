@@ -319,9 +319,11 @@ Se usan los parametros del Ejemplo \# 1, para mostrar el contenido esperado en f
 **response**:
 
 ```json
-{"fraud_score": 0.0, 
-"fraud_concept": ["F1", "F2", "F3"], 
-"legal_score": 1.0, 
-"legal_concept": ["L9", "L8", "L7"],
-"reliable": true  }
+{
+    "fraud_score": 0.0, 
+    "fraud_concept": ["F1", "F2", "F3"], 
+    "legal_score": 1.0, 
+    "legal_concept": ["L9", "L8", "L7"],
+    "reliable": true
+}
 ```
