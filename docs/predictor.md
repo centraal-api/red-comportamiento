@@ -59,14 +59,14 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 ### Parámetros
 
-#### Headers: Contiene el tipo de autorizacion y contenido de la cabecera.
+**Headers**: Contiene el tipo de autorizacion y contenido de la cabecera.
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
 | Sí | Autorization   | String    | "Bearer  + **signed_jwt**"  |
 | Sí | Content-Type      | String    | application/x-www-form-urlencoded          |
 
-#### Query Params:
+**Query Params**:
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
@@ -97,6 +97,8 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 |id_token  | String    | ID Token firmado por Google, necesario para hacer invocacion del servicio de predicción
 
 #### Ejemplo Response
+
+**Response**:
 
 ```json
 {
@@ -316,7 +318,7 @@ Se usan los parametros del Ejemplo \# 1, para mostrar el contenido esperado en f
   }
 ```
 
-**response**:
+**Response**:
 
 ```json
 {
