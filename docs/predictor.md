@@ -59,7 +59,7 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
     | Sí | sub   | String    | Email que se obtiene del archivo de service account: <br /> "sa-evertec@escudo-redcomp.iam.gserviceaccount.com"   |
     | Sí | aud   | String    | Url de autenticacion de Google GCP: <br /> "https://www.googleapis.com/oauth2/v4/token"          |
     | Sí | iat   | String    | Hora de generación del token JWT, debe ser un numero entero timestamp  <br /> Ej: 1635870886         |
-    | Sí | exp   | String    | Hora de expiración del token, se suman segundos al timestamp de generacion del token. <br /> Ej 1635870886 + 3600 Segundos          |
+    | Sí | exp   | String    | Hora de expiración del token, se suman segundos al timestamp de generacion del token. <br /> Ej: 1635870886 + 3600 Segundos          |
     | Sí | target_audience   | String    | Endpoint del backend del servicio de predicción de riesgo:  <br /> "https://us-central1-escudo-redcomp.cloudfunctions.net/dev_predictor_service"          |
     
     
