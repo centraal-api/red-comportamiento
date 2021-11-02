@@ -63,7 +63,7 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
-| Sí | Autorization   | String    | "Bearer " + **signed_jwt**  |
+| Sí | Autorization   | String    | "Bearer  + **signed_jwt**"  |
 | Sí | Content-Type      | String    | application/x-www-form-urlencoded          |
 
 #### Query Params:
@@ -115,7 +115,7 @@ Esta sección explica como realizar el request al servicio asumiendo que ya se r
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
-| Sí | Autorization   | String    | "Bearer " + **id_token**  |
+| Sí | Autorization   | String    | "Bearer  + **id_token**" |
 
 
 **Body**:
