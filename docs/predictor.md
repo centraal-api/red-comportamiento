@@ -61,19 +61,19 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
-| Sí | headers   | JSON    | Contiene el tipo de autorizacion y contenido de la cabecera. <br/> **Autorization**: "Bearer " + signed_jwt <br/> **Content-Type**: "application/x-www-form-urlencoded"   |
-| Sí | body      | JSON    | Cuerpo del mensaje que requiere Google. <br/>  **grant_type**: "urn:ietf:params:oauth:grant-type:jwt-bearer" <br/> **assertion**: signed_jwt          |
+| Sí | Headers   | JSON    | Contiene el tipo de autorizacion y contenido de la cabecera. <br/> **Autorization**: "Bearer " + signed_jwt <br/> **Content-Type**: "application/x-www-form-urlencoded"   |
+| Sí | Query Params      | JSON    | Cuerpo del mensaje que requiere Google. <br/>  **grant_type**: "urn:ietf:params:oauth:grant-type:jwt-bearer" <br/> **assertion**: signed_jwt          |
 
 #### Ejemplo Request
 
-headers =
+Headers =
 ```json
 {
    "Autorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjUxY2VjM2JiZTJiODAwNWVlYTA1NDQ4MTE5NGExMDQxZTllZDRjZTgifQ.eyJpc3MiOiJzYS1ldmVydGVjQGVzY3Vkby1yZWRjb21wLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwic3ViIjoic2EtZXZlcnRlY0Blc2N1ZG8tcmVkY29tcC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsImF1ZCI6Imh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92NC90b2tlbiIsImlhdCI6MTYzNTQ0NzkzMywiZXhwIjoxNjM1NDUxNTMzLCJ0YXJnZXRfYXVkaWVuY2UiOiJodHRwczovL3VzLWNlbnRyYWwxLWVzY3Vkby1yZWRjb21wLmNsb3VkZnVuY3Rpb25zLm5ldC9mdW5jdGlvbi0xIn0.atmUByDD9UHsMs3pVjoqvUDDQYMLhxbb0c_VUoRYnIohIcRHC4uZLYpOr9tUZmhxllqKVS43kh7KSHepvm507HATHEjFWb8zg1hamgjtoDULxplMU82jo7CHC6HMRg4oj41LMSlKBxXC8fKVsdovtXDPY7XPgRPRPQRcAz4vDxnjUvEiM4x-grU6EUZ_VPzRs68WOZMGx0a-ELOir7UOIBniHRz3xDOf-g14voZqv5vm_acJea9yOpQQNxEhU345VZ6Vd2jVDW0xMeIsq4PaMjxP7E3CU3D0KBxL703aNwVb7tOAaXc2iqDA7Uz-GW2Ar4a_ct8Fv62FcTWaPjxmcw",
    "Content-Type":"application/x-www-form-urlencoded"
 }
 ```
-body :
+Query Params :
 ```json
 {
    "grant_type":"urn:ietf:params:oauth:grant-type:jwt-bearer",
