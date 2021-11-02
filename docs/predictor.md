@@ -105,7 +105,7 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 ```
 
-### Consulta de riesgo de fraude <a name="consulta_riesgo_fraude"></a>
+### Consulta de riesgo de fraude - servicio de prediccion<a name="consulta_riesgo_fraude"></a>
 
 Esta sección explica como realizar el request al servicio asumiendo que ya se realizo el flujo autenticación.
 
