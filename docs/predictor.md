@@ -84,14 +84,14 @@ Query Params :
 #### Response Data
 
 | Campo      | Tipo     | Descripción |
-| :------------- | :----------: | -----------: |
-|token  | String    | ID Token firmado por Google, necesario para hacer invocacion del servicio de predicción
+| :------------- | :---------- | :----------- |
+|id_token  | String    | ID Token firmado por Google, necesario para hacer invocacion del servicio de predicción
 
 #### Ejemplo Response
 
 ```json
 {
-    "token":"'eyJhbGciOiJSUzI1NiIsImtpZCI6ImJiZDJhYzdjNGM1ZWI4YWRjOGVlZmZiYzhmNWEyZGQ2Y2Y3NTQ1ZTQiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJodHRwczovL3VzLWNlbnRyYWwxLWVzY3Vkby1yZWRjb21wLmNsb3VkZnVuY3Rpb25zLm5ldC9mdW5jdGlvbi0xIiwiYXpwIjoic2EtZXZlcnRlY0Blc2N1ZG8tcmVkY29tcC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsImVtYWlsIjoic2EtZXZlcnRlY0Blc2N1ZG8tcmVkY29tcC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJleHAiOjE2MzU0NTE3NTQsImlhdCI6MTYzNTQ0ODE1NCwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwic3ViIjoiMTE2MzQwNDg5NzQ1NzE0MjczMDM4In0.rLwCdM7I0gdDZWrSxhiFpMfuRPDHCb6Cyn_dqPTRtR43RUUxfWg8Twb-tScl4zCPXbKbWIe8n8c3ZFKF4S5hvihd-GyalTYbKV6ZbSfsCuikg5GykCpGb-A8_V2mtScrM_VybNGgywLxJyURmcLC6uxKLKgECgmAf5brRdZyukT7m1soC8jnBLIaA58pqDO1-MboTXxmjW2lnmx978-Z4q1KchGvvmWzuF9ilo8DpJ3vrfNUNshOgEgQ1KeG98-DAQS6RLq2YUgPEQfMSTXbusYgs-znvS1FEyra3fodbOt7g6Wv_0Z39qMhDZxNW1Z_jM3DlPzgv4jKamP34p5JMQ'"
+    "id_token":"'eyJhbGciOiJSUzI1NiIsImtpZCI6ImJiZDJhYzdjNGM1ZWI4YWRjOGVlZmZiYzhmNWEyZGQ2Y2Y3NTQ1ZTQiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJodHRwczovL3VzLWNlbnRyYWwxLWVzY3Vkby1yZWRjb21wLmNsb3VkZnVuY3Rpb25zLm5ldC9mdW5jdGlvbi0xIiwiYXpwIjoic2EtZXZlcnRlY0Blc2N1ZG8tcmVkY29tcC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsImVtYWlsIjoic2EtZXZlcnRlY0Blc2N1ZG8tcmVkY29tcC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJleHAiOjE2MzU0NTE3NTQsImlhdCI6MTYzNTQ0ODE1NCwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwic3ViIjoiMTE2MzQwNDg5NzQ1NzE0MjczMDM4In0.rLwCdM7I0gdDZWrSxhiFpMfuRPDHCb6Cyn_dqPTRtR43RUUxfWg8Twb-tScl4zCPXbKbWIe8n8c3ZFKF4S5hvihd-GyalTYbKV6ZbSfsCuikg5GykCpGb-A8_V2mtScrM_VybNGgywLxJyURmcLC6uxKLKgECgmAf5brRdZyukT7m1soC8jnBLIaA58pqDO1-MboTXxmjW2lnmx978-Z4q1KchGvvmWzuF9ilo8DpJ3vrfNUNshOgEgQ1KeG98-DAQS6RLq2YUgPEQfMSTXbusYgs-znvS1FEyra3fodbOt7g6Wv_0Z39qMhDZxNW1Z_jM3DlPzgv4jKamP34p5JMQ'"
 }
 
 ```
