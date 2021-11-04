@@ -20,15 +20,15 @@ El proposito de esta solucion es el de la construccion de un sistema de evaluaci
 ![jwt](https://raw.githubusercontent.com/centraal-api/red-comportamiento/main/docs/img/jwt.png)
 
 Debes autentícarte antes para realizar invocaciones del servicio de predicción.
-Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta de servicio proporcionada 'json_cred.json' para intercambiarlo por un token de ID firmado por Google. La cuenta de servicio es la misma que se esta utilizando para realizar el cargue de los deltas desde on-premise - Google Cloud
+Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta de servicio proporcionada `key.json` para intercambiarlo por un token de ID firmado por Google. La cuenta de servicio es la misma que se esta utilizando para realizar el cargue de los deltas desde on-premise - Google Cloud
 
 1. Obtenga la clave privada y correo electronico que vienen del service account:
 
-    **pkey_id** = json_cred['private_key']
+    **pkey_id** = key['private_key']
     
     Ej: "-----BEGIN PRIVATE KEY-----\nMIGEAgEAMBAGByqGSM49AgEGBS..."
 
-    **email** = json_cred['client_email']
+    **email** = key['client_email']
     
     Ej: "sa-evertec@escudo-redcomp.iam.gserviceaccount.com"  
 
