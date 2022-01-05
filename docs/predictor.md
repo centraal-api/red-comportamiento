@@ -145,7 +145,7 @@ Esta sección explica como realizar el request al servicio asumiendo que ya se r
 
 No se usa ningun endpoint especifico para esta URL de pruebas.
 
-> **__NOTA:__** Para la integración en sistema productivo se debe solicar la URL y su certificado. Este endpoint no da respuestas que no esten explicadas en las tablas de la siguientes secciones.
+> **_NOTA:_** Para la integración en sistema productivo se debe solicar la URL y su certificado. Este endpoint no da respuestas que no esten explicadas en las tablas de la siguientes secciones.
 
 > **_Metodo:_** : POST
 
