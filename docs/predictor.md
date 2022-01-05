@@ -141,6 +141,12 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 Esta sección explica como realizar el request al servicio asumiendo que ya se realizo el flujo autenticación.
 
+> **_URL para pruebas:_** <https://centraal.dev>
+ 
+> **__NOTA:__** Para la integración en sistema productivo se debe solicar la URL y su certificado. Este endpoint no da respuestas que no esten explicadas en las tablas de la siguientes secciones.
+
+> **_Metodo:_** : POST
+
 #### Descripcion de campos
 
 **Headers**: Se debe utilizar el id_token obenido del servicio de autorizacion para identificar el tipo.
@@ -148,7 +154,6 @@ Esta sección explica como realizar el request al servicio asumiendo que ya se r
 | **Requerido**  | **Nombre**   | **Tipo**     | **Descripción**  |
 | :------------- | :----------: | :----------- | :----------- |
 | Sí | Autorization   | String    | Tipo de autorizacion: <br /> "Bearer  + **id_token**" |
-
 
 **Body**:
 En la siguiente tabla se muestran los campos requeridos para realizar la consulta al servicio de sobre el riesgo de fraude de una transacción.
@@ -254,12 +259,6 @@ De acuerdo a los patrones detectados, el servicio responde las razones que influ
 #### Datos de prueba y descripción
 
 En esta sección se describen valores ficticios que pueden ser usados para realizar preubas de integración en el servicio.
-
-##### Request URL de pruebas
-
-<https://centraal.dev>
-
-**NOTA**: Para la integración en sistema productivo se debe solicar la URL y su certificado. Este endpoint no da respuestas que no esten explicadas en las tablas de la siguientes secciones.
 
 ##### Ejemplos
 
