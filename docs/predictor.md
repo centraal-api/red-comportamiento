@@ -165,8 +165,8 @@ En la siguiente tabla se muestran los campos requeridos para realizar la consult
 | idsesion | Si | String | No | No | identificador unico de la transaccion. Ese valor sera usado para monitorear y auditar la transacción|
 | transaction_processing_date | Si | String | No | No | Fecha de procesamiento de la transaccion en formato '%Y-%m-%d %H:%M:%S'. Se asume timezone UTC-5|
 | transaction_processing_amount | Si | float/int | No | No | Monto de la transacción. |
-| transaction_currency | Si | String | No | No | Monto de la transacción. |
-| transaction_card_id | Si | string | No| No|Moneda utilizada en la transacción |
+| transaction_currency | Si | String | No | No | Moneda utilizada en la transacción. |
+| transaction_card_id | Si | string | Si| Si|Identificador de la tarjeta. |
 | transaction_retail_code | Si | String | No | Si | identificador del retail code de la transacción. |
 | transaction_payer_id | Si | String | Si | Si |Identificador del pagador |
 | transaction_payer_email | Si | String | Si | Si | Email del pagador |
