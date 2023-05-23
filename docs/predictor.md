@@ -141,7 +141,7 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 Esta sección explica como realizar el request al servicio asumiendo que ya se realizo el flujo autenticación.
 
-> **_URL para pruebas:_** <https://centraal.dev>
+> **_URL para pruebas:_** <https://centraal.com.co>
 
 No se usa ningun endpoint especifico para esta URL de pruebas.
 
