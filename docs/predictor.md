@@ -20,7 +20,7 @@ El proposito de esta solucion es el de la construccion de un sistema de evaluaci
 ![jwt](https://raw.githubusercontent.com/centraal-api/red-comportamiento/main/docs/img/jwt.png)
 
 Debes autentícarte antes para realizar invocaciones del servicio de predicción.
-Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta de servicio proporcionada `key.json` para intercambiarlo por un token de ID firmado por Google. La cuenta de servicio es la misma que se esta utilizando para realizar el cargue de los deltas desde on-premise - Google Cloud
+Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta de servicio proporcionada `key.json` para intercambiarlo por un token de ID firmado por Google. Esta cuenta debe ser proporcionado por el Equipo de Galeón.
 
 1. Obtenga la clave privada y correo electronico que vienen del service account:
 
@@ -141,11 +141,12 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 
 Esta sección explica como realizar el request al servicio asumiendo que ya se realizo el flujo autenticación.
 
-> **_URL para pruebas:_** <https://centraal.com.co>
+> **_URL para pruebas:_** <https://escudoredcomp.com>
+> **_URL para prod:_** <https://prod.escudoredcomp.com>
 
 No se usa ningun endpoint especifico para esta URL de pruebas.
 
-> **_NOTA:_** Para la integración en sistema productivo se debe solicar la URL y su certificado. Este endpoint no da respuestas que no esten explicadas en las tablas de la siguientes secciones.
+> **_NOTA:_**  El endpoint de pruebas NO da respuestas que NO esten explicadas en las tablas de la siguientes secciones.
 
 > **_Metodo:_** : POST
 
