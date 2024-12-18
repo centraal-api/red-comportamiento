@@ -67,7 +67,7 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
 
 > **EndPoint para pruebas:_** https://us-central1-escudo-redcomp.cloudfunctions.net/dev_predictor_service
 
-> **EndPoint para pruebas:_** https://us-central1-escudo-redcomp.cloudfunctions.net/predictor_service
+> **EndPoint para productivo:** https://us-central1-escudo-redcomp.cloudfunctions.net/predictor_service
 
     
     **Ejemplo payload**:
