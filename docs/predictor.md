@@ -64,6 +64,11 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
     | Sí | exp   | String    | Hora de expiración del token, se suman segundos al timestamp de generacion del token. <br /> Ej: 1635870886 + 3600 Segundos          |
     | Sí | target_audience   | String    | Endpoint del backend del servicio de predicción de riesgo |
     
+
+> **EndPoint para pruebas:_** https://us-central1-escudo-redcomp.cloudfunctions.net/dev_predictor_service
+
+> **EndPoint para pruebas:_** https://us-central1-escudo-redcomp.cloudfunctions.net/predictor_service
+
     
     **Ejemplo payload**:
     
@@ -142,6 +147,7 @@ Con lo anterior ya se puede intercambiar el JWT autofirmado por el ID token firm
 Esta sección explica como realizar el request al servicio asumiendo que ya se realizo el flujo autenticación.
 
 > **_URL para pruebas:_** <https://escudoredcomp.com>
+
 > **_URL para prod:_** <https://prod.escudoredcomp.com>
 
 No se usa ningun endpoint especifico para esta URL de pruebas.
