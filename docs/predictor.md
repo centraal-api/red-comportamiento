@@ -65,9 +65,9 @@ Para auntenticarte primero debes crear un token JWT autofirmado usando la cuenta
     | Sí | target_audience   | String    | Endpoint del backend del servicio de predicción de riesgo |
     
 
-> **EndPoint para pruebas:** https://us-central1-escudo-redcomp.cloudfunctions.net/dev_predictor_service
+> **target_audience para pruebas:** https://us-central1-escudo-redcomp.cloudfunctions.net/dev_predictor_service
 
-> **EndPoint para productivo:** https://us-central1-escudo-redcomp.cloudfunctions.net/predictor_service
+> **target_audience para productivo:** https://us-central1-escudo-redcomp.cloudfunctions.net/predictor_service
 
     
     **Ejemplo payload**:
