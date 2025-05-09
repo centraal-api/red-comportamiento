@@ -188,6 +188,7 @@ En la siguiente tabla se muestran los campos requeridos para realizar la consult
 | transaction_payer_mobile | Si | String | Si | Si |numero de telefono movil del pagador|
 | transaction_ip_address | Si | String | No | Si |Ip de la transacción |
 | user_agent | Si | String | No | Si |User agent de la transacción. No se comprueba si esl User agent es valido, se usa para extraer el navegador y el sistema operativo|
+| additional | No | Object | No | Si | Objeto opcional que permite enviar información adicional. No se valida su contenido. Por defecto se buscan los campos source, trxid e internal_ref pero se pueden enviar otros valores |
 
 > **_NOTA para campos vacios:_**  Para los campos marcados con `Acepta vacio=Si`, si la transaccion no tiene valor del campo requerido se debe enviar un string vacio `''` o `null` en el caso de campos numericos.
 
@@ -364,7 +365,12 @@ Se usan los parametros del Ejemplo \# 1, para mostrar el contenido esperado en f
     "transaction_payer_phone": "",
     "transaction_payer_mobile": "45678987456547898745",
     "transaction_ip_address": "59.208.38.243",
-    "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1"
+    "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/536.1 (KHTML, like Gecko) CriOS/50.0.894.0 Mobile/00Q341 Safari/536.1",
+    "additional": {
+        "source": "placetopay",
+        "trxid": "54a6s5d4asd65a4s6d5asd654",
+        "internal_ref": "16489784654"
+    }
   }
 ```
 
@@ -412,7 +418,12 @@ Se usan los parametros del Ejemplo \# 21, para mostrar el contenido esperado en 
     "transaction_payer_phone": "",
     "transaction_payer_mobile": "",
     "transaction_ip_address": "",
-    "user_agent": ""
+    "user_agent": "",
+    "additional": {
+        "source": "placetopay",
+        "trxid": "54a6s5d4asd65a4s6d5asd654",
+        "internal_ref": "16489784654"
+    }
   }
   
 ```
